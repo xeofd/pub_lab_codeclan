@@ -13,3 +13,10 @@ class Customer:
             drink = pub.find_drink(drink_name)
             self.wallet -= drink.price
             pub.increase_or_decrease_cash(drink.price)
+            self.drunkenness += drink.alcohol_level
+
+    def buy_food(self,pub, food_name):
+        food = pub.find_food(food_name)
+        self.wallet -= food.price
+        pub.increase_or_decrease_cash(food.price)
+        self.drunkenness -= food.rejuvenation_level

@@ -2,7 +2,7 @@ import unittest
 from src.pub import Pub
 from src.customer import Customer
 from src.drink import Drink
-#from src.food import Food
+from src.food import Food
 
 # new class
 class TestPub(unittest.TestCase):
@@ -19,8 +19,15 @@ class TestPub(unittest.TestCase):
         self.drinks.append(self.drink_1)
         self.drinks.append(self.drink_2)
 
+        # set up food list
+        self.food_1 = Food('Burger', 5, 2)
+        self.food_2 = Food('Salad',  4, 1)
+        self.food_3 = Food('Chips', 1, 4)
+        self.food = []
+        self.food.extend([self.food_1, self.food_2, self.food_3])
+
         # set up pub
-        self.pub = Pub("Prancing Pony", 100.00, self.drinks)
+        self.pub = Pub("Prancing Pony", 100.00, self.drinks, self.food)
 
     # test functions
     def test_pub_has_name(self):
@@ -53,7 +60,26 @@ class TestPub(unittest.TestCase):
         customer = self.customer_1
         self.assertEqual(False, self.pub.check_age(customer))
 
-    #def test
+    def test_drunkenness(self):
+        self.customer_2.buy_drink(self.pub, 'Mojito')
+        alcohol_level = 2
+        self.assertEqual(alcohol_level, self.customer_2.drunkenness)
     
+    def test_pub_max_drunkenness_pass(self):
+        self.customer_2.buy_drink(self.pub, 'Mojito')
+        self.customer_2.buy_drink(self.pub, 'Redbull Vodka')
+        self.customer_2.buy_drink(self.pub, 'Redbull Vodka')
+        self.assertEqual(8, self.customer_2.drunkenness)
 
-    
+    def test_pub_max_drunkenness_fail(self):
+        self.customer_2.buy_drink(self.pub, 'Mojito')
+        self.customer_2.buy_drink(self.pub, 'Mojito')
+        self.customer_2.buy_drink(self.pub, 'Mojito')
+        self.customer_2.buy_drink(self.pub, 'Redbull Vodka')
+        self.customer_2.buy_drink(self.pub, 'Redbull Vodka')
+        self.assertEqual(None, self.customer_2.buy_drink(self.pub, 'Redbull Vodka'))
+
+    def test_food_reduces_drunkenness(self):
+        self.customer_2.buy_drink(self.pub, 'Mojito')
+        self.customer_2.buy_food(self.pub, 'Burger')
+        self.assertEqual(0, self.customer_2.drunkenness)
