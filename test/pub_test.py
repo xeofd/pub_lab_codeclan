@@ -29,6 +29,7 @@ class TestPub(unittest.TestCase):
         # set up pub
         self.pub = Pub("Prancing Pony", 100.00, self.drinks, self.food)
 
+
     # test functions
     def test_pub_has_name(self):
         name = self.pub.name
@@ -83,3 +84,9 @@ class TestPub(unittest.TestCase):
         self.customer_2.buy_drink(self.pub, 'Mojito')
         self.customer_2.buy_food(self.pub, 'Burger')
         self.assertEqual(0, self.customer_2.drunkenness)
+
+    def test_stock_total_price(self):
+        self.assertEqual(8.50, self.pub.stock_value())
+
+    # This was a tough one. 
+    # could you please push this to git? 
